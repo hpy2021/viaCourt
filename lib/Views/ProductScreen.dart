@@ -5,13 +5,14 @@ import 'package:via_court/Constants/AppColors.dart';
 import 'package:via_court/Constants/AppConstants.dart';
 import 'package:via_court/Constants/AppStrings.dart';
 import 'package:via_court/Constants/AppTextStyles.dart';
+import 'package:via_court/Models/AddToCartResponse.dart';
 import 'package:via_court/Views/Cart.dart';
 import 'package:via_court/Widgets/custom_background_common_View.dart';
 import 'package:via_court/Widgets/custom_button.dart';
 import 'dart:collection';
 import 'package:via_court/Utils/ApiManager.dart';
 import 'package:via_court/Models/ProductResponse.dart';
-import 'package:via_court/Models/AddToCartResponse.dart.';
+
 
 class ProductScreen extends StatefulWidget {
   int bookingId, userId, pitchId;

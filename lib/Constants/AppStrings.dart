@@ -1,6 +1,6 @@
 class AppStrings {
-      static const String BASE_URL = "http://dfe878a54e7a.ngrok.io/";
-    static const String IMGBASE_URL = "http://dfe878a54e7a.ngrok.io/";
+      static const String BASE_URL = "http://992fcccdd96f.ngrok.io/";
+    static const String IMGBASE_URL = "http://992fcccdd96f.ngrok.io/";
   static const String COURT_URL = BASE_URL + "api/getCourts";
 
   static const String TOKEN_KEY = "Token";

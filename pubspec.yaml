@@ -29,7 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   flutter_calendar_carousel: ^1.5.3
-  intl: ^0.17.0
+  intl: ^0.16.1
   flutter_slidable: ^0.5.7
   font_awesome_flutter: ^8.11.0
   credit_card_slider: ^1.0.1
@@ -37,13 +37,14 @@ dependencies:
   provider: ^4.3.3
   http: ^0.12.2
   bot_toast: ^3.0.5
-  connectivity: ^2.0.2
-  flutter_spinkit: "^4.1.2"
+
+  flutter_spinkit: ^4.1.2
   shared_preferences: ^0.5.12+4
   flutter_local_notifications: ^4.0.1
-  easy_localization: ^2.3.3+1
+  easy_localization: ^2.3.2
   cached_network_image: ^2.5.0
   simple_animations: ^2.5.1
+  connectivity: ^2.0.2
 
 dev_dependencies:
   flutter_test:
