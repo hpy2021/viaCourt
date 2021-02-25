@@ -46,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await ApiManager().postCall(AppStrings.LOGIN_URL, request, context));
 
       if (registerResponse.status == 200) {
+
           sharedPreferences = await SharedPreferences.getInstance();
           await sharedPreferences.setString(
               AppStrings.TOKEN_KEY, registerResponse.csrf);

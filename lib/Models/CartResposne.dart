@@ -27,15 +27,19 @@ class CartResponse {
 }
 
 class ServiceData {
+  int price;
+  int servicesId;
   int id;
   String title;
   int total;
   int qty;
   String image;
 
-  ServiceData({this.id, this.title, this.total, this.qty, this.image});
+  ServiceData({this.id, this.title, this.total, this.qty, this.image,this.servicesId,this.price,});
 
   ServiceData.fromJson(Map<String, dynamic> json) {
+    price = json['price'];
+    servicesId = json['services_id'];
     id = json['id'];
     title = json['title'];
     total = json['total'];
@@ -45,6 +49,8 @@ class ServiceData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['price'] = this.price;
+    data['services_id'] = this.servicesId;
     data['id'] = this.id;
     data['title'] = this.title;
     data['total'] = this.total;
@@ -55,14 +61,16 @@ class ServiceData {
 }
 
 class Pitch {
+
   int id;
   String name;
   int price;
   String pitchImage;
 
-  Pitch({this.id, this.name, this.price, this.pitchImage});
+  Pitch({this.id, this.name, this.price, this.pitchImage });
 
   Pitch.fromJson(Map<String, dynamic> json) {
+
     id = json['id'];
     name = json['name'];
     price = json['price'];
@@ -71,6 +79,7 @@ class Pitch {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+
     data['id'] = this.id;
     data['name'] = this.name;
     data['price'] = this.price;

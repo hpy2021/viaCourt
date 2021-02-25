@@ -11,6 +11,8 @@ import 'package:via_court/Widgets/custom_background_common_View.dart';
 import 'package:via_court/Widgets/custom_button.dart';
 
 class ConfirmationScreen extends StatelessWidget {
+  String price;
+  ConfirmationScreen({this.price});
   @override
   Widget build(BuildContext context) {
    return Scaffold(
@@ -54,7 +56,7 @@ mainBody(context) {
 
                 _roundCircleWithtick(),
                 SizedBox(height: 33,),
-                Text("\$ 32.46",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+                Text("\$ $price.00",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
                 SizedBox(height: 11,),
                 Text("Your Payment is Received !",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: Color(0xff666666)),),
 

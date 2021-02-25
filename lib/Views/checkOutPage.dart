@@ -14,6 +14,9 @@ import 'package:via_court/Widgets/custom_background_common_View.dart';
 import 'package:via_court/Widgets/custom_button.dart';
 
 class CheckOutPage extends StatefulWidget {
+
+  String price;
+  CheckOutPage({this.price});
   @override
   _CheckOutPageState createState() => _CheckOutPageState();
 }
@@ -330,7 +333,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ConfirmationScreen()));
+                      builder: (context) => ConfirmationScreen(price: widget.price,)));
             },
             text: AppStrings.payText),
       ),
