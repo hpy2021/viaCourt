@@ -12,13 +12,13 @@ import 'package:via_court/Constants/AppStrings.dart';
 import 'package:via_court/Constants/AppTextStyles.dart';
 import 'package:via_court/Models/AddToCartResponse.dart';
 import 'package:via_court/Models/CartItemModel.dart';
+import 'package:via_court/Models/CommonResponse.dart';
 import 'package:via_court/Models/ProductResponse.dart';
 import 'package:via_court/Utils/ApiManager.dart';
 import 'package:via_court/Views/checkOutPage.dart';
 import 'package:via_court/Widgets/custom_background_common_View.dart';
 import 'package:via_court/Widgets/custom_button.dart';
 import 'package:via_court/Models/CartResposne.dart';
-
 
 class Cart extends StatefulWidget {
   int pitchId, bookingId, userId;
@@ -43,7 +43,7 @@ class _CartState extends State<Cart> {
     // TODO: implement initState
     super.initState();
 
-    _itemAdd();
+    // _itemAdd();
     getCart();
   }
 
@@ -83,8 +83,12 @@ class _CartState extends State<Cart> {
           });
         serviceList = response.service;
         pitchData = response.pitch;
+        sum=0;
         response.service.forEach((element) {
-          sum = sum + element.total;
+          // sum = sum + element.total;
+
+
+          sum += element.total;
         });
         // serviceList.forEach((element) {
         //   element.total;
@@ -140,6 +144,8 @@ class _CartState extends State<Cart> {
           setState(() {
             isLoading = false;
           });
+        getCart();
+
 
         setState(() {});
 
@@ -173,9 +179,9 @@ class _CartState extends State<Cart> {
       // request["users_id"] = "${widget.userId}";
       // request["price"] = "$price";
       // request["services_id"] = "$serviceId";
-      AddToCartresponse response = new AddToCartresponse.fromJson(
+      CommonResponse response = new CommonResponse.fromJson(
         await ApiManager().postCallWithHeader(
-            AppStrings.DECREMENT_URL + "/2", request, context),
+            AppStrings.DECREMENT_URL + "/$serviceId", request, context),
       );
       // CommonResponse response = new CommonResponse.fromJson(await ApiManager()
       //     .postCallWithHeader(
@@ -189,11 +195,12 @@ class _CartState extends State<Cart> {
       // TimeSlotResponse response = new TimeSlotResponse.fromJson(await ApiManager()
       //     .postCallWithHeader(AppStrings.PRODUCT_URL, request, context));
       if (response != null) {
-        print(response.product);
+        // print(response.product);
         if (mounted)
           setState(() {
             isLoading = false;
           });
+        getCart();
 
         setState(() {});
 
@@ -277,13 +284,14 @@ class _CartState extends State<Cart> {
                 "assets/images/cart.png",
                 width: 33,
                 height: 29,
+                fit: BoxFit.contain,
               ),
               Positioned(
                 left: 22,
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 0.8, horizontal: 5),
                   decoration:
-                      BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                  BoxDecoration(color: Colors.red, shape: BoxShape.circle),
                   child: Text(
                     "3",
                     textAlign: TextAlign.center,
@@ -301,29 +309,29 @@ class _CartState extends State<Cart> {
   mainBody() {
     return BackgroundCurvedView(
         widget: Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _headerOfListView(),
-          Expanded(
-            child: cartBodyView(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _headerOfListView(),
+              Expanded(
+                child: cartBodyView(),
+              ),
+              // _subTotalView(),
+              SizedBox(
+                height: 9,
+              ),
+              _totalView(),
+              SizedBox(
+                height: 17,
+              ),
+              _bottomButton(),
+              SizedBox(
+                height: 24,
+              )
+            ],
           ),
-          // _subTotalView(),
-          SizedBox(
-            height: 9,
-          ),
-          _totalView(),
-          SizedBox(
-            height: 17,
-          ),
-          _bottomButton(),
-          SizedBox(
-            height: 24,
-          )
-        ],
-      ),
-    ));
+        ));
   }
 
   _headerOfListView() {
@@ -373,33 +381,33 @@ class _CartState extends State<Cart> {
                 pitchData == null
                     ? Container()
                     : CachedNetworkImage(
-                        height: 31,
-                        width: 44,
-                        fit: BoxFit.cover,
-                        imageUrl:
-                            AppStrings.IMGBASE_URL + "${pitchData.pitchImage}",
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: SpinKitCircle(
-                            color: AppColors.appColor_color,
-                            size: 20,
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
+                  height: 31,
+                  width: 44,
+                  fit: BoxFit.contain,
+                  imageUrl:
+                  AppStrings.IMGBASE_URL + "${pitchData.pitchImage}",
+                  progressIndicatorBuilder:
+                      (context, url, downloadProgress) => Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: SpinKitCircle(
+                      color: AppColors.appColor_color,
+                      size: 20,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
                 SizedBox(
                   width: 7,
                 ),
                 Expanded(
                     child: Text(
-                  pitchData == null
-                      ? ""
-                      : pitchData.name != null
+                      pitchData == null
+                          ? ""
+                          : pitchData.name != null
                           ? pitchData.name
                           : "",
-                  style: AppTextStyles.textStyle14grey,
-                )),
+                      style: AppTextStyles.textStyle14grey,
+                    )),
                 Text(
                   "Qty: 1",
                   style: AppTextStyles.textStyle14grey,
@@ -411,8 +419,8 @@ class _CartState extends State<Cart> {
                   pitchData == null
                       ? ""
                       : pitchData.price == null
-                          ? pitchData.price
-                          : "\$ ${pitchData.price}",
+                      ? pitchData.price
+                      : "\$ ${pitchData.price}",
                   style: AppTextStyles.textStyle14grey,
                 )
               ],
@@ -453,12 +461,12 @@ class _CartState extends State<Cart> {
             imageUrl: AppStrings.IMGBASE_URL + item.image,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SpinKitCircle(
-                color: AppColors.appColor_color,
-                size: 20,
-              ),
-            ),
+                  padding: const EdgeInsets.all(20.0),
+                  child: SpinKitCircle(
+                    color: AppColors.appColor_color,
+                    size: 20,
+                  ),
+                ),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           SizedBox(
@@ -466,11 +474,11 @@ class _CartState extends State<Cart> {
           ),
           Expanded(
               child: Container(
-            child: Text(
-              item.title,
-              style: AppTextStyles.textStyle14grey,
-            ),
-          )),
+                child: Text(
+                  item.title,
+                  style: AppTextStyles.textStyle14grey,
+                ),
+              )),
           _quantityIncremented(item),
           SizedBox(
             width: 42,
@@ -494,7 +502,7 @@ class _CartState extends State<Cart> {
                 if (qty.qty > 1) {
                   qty.qty = --qty.qty;
                   removefromCart(serviceId: qty.id);
-                  getCart();
+                  // getCart();
                 }
 
                 setState(() {});
@@ -526,10 +534,9 @@ class _CartState extends State<Cart> {
                 onTap: () {
                   print("asdas");
                   setState(
-                    () {
+                        () {
                       qty.qty = qty.qty + 1;
-                      addtocartapi(serviceId: qty.id, price: qty.total);
-                      getCart();
+                      addtocartapi(serviceId: qty.servicesId, price: qty.price);
                     },
                   );
                 },
@@ -551,9 +558,9 @@ class _CartState extends State<Cart> {
         children: [
           Expanded(
               child: Text(
-            "Sub-total",
-            style: TextStyle(fontSize: 14, color: Color(0xff666666)),
-          )),
+                "Sub-total",
+                style: TextStyle(fontSize: 14, color: Color(0xff666666)),
+              )),
           Text(
             "\$ $subTotal",
             style: TextStyle(fontSize: 14, color: Color(0xff666666)),
@@ -570,11 +577,11 @@ class _CartState extends State<Cart> {
         children: [
           Expanded(
               child: Text(
-            "Total",
-            style: TextStyle(fontSize: 20, color: Colors.black,fontWeight: FontWeight.bold),
-          )),
+                "Total",
+                style: TextStyle(fontSize: 20, color: Colors.black,fontWeight: FontWeight.bold),
+              )),
           Text(
-            "\$ ${qty}",
+            "\$ $total",
             style: TextStyle(fontSize: 20, color: Colors.black,fontWeight: FontWeight.bold),
           )
         ],
@@ -588,9 +595,12 @@ class _CartState extends State<Cart> {
       child: CustomButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CheckOutPage()));
+                MaterialPageRoute(builder: (context) => CheckOutPage(price: "$total",)));
           },
           text: AppStrings.proceedToCheckOutText),
     );
   }
 }
+
+
+
