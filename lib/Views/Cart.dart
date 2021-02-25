@@ -10,6 +10,7 @@ import 'package:via_court/Constants/AppColors.dart';
 import 'package:via_court/Constants/AppConstants.dart';
 import 'package:via_court/Constants/AppStrings.dart';
 import 'package:via_court/Constants/AppTextStyles.dart';
+import 'package:via_court/Models/AddToCartResponse.dart';
 import 'package:via_court/Models/CartItemModel.dart';
 import 'package:via_court/Models/CommonResponse.dart';
 import 'package:via_court/Models/ProductResponse.dart';
@@ -18,7 +19,6 @@ import 'package:via_court/Views/checkOutPage.dart';
 import 'package:via_court/Widgets/custom_background_common_View.dart';
 import 'package:via_court/Widgets/custom_button.dart';
 import 'package:via_court/Models/CartResposne.dart';
-import 'package:via_court/Models/AddToCartResponse.dart.';
 
 class Cart extends StatefulWidget {
   int pitchId, bookingId, userId;
@@ -601,3 +601,6 @@ class _CartState extends State<Cart> {
     );
   }
 }
+
+
+
