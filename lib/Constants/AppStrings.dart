@@ -12,7 +12,7 @@ class AppStrings {
   static const String PITCH_TIME_SLOT_URL = BASE_URL + "api/timeSlots";
   static const String PRODUCT_URL = BASE_URL +"api/getServices";
     static const String AVAILABILITY_URL = BASE_URL +"api/pitches";
-    static const String BOOKING_CONFIRM_URL = BASE_URL +"api/createBooking";
+static const String BOOKING_CONFIRM_URL = BASE_URL +"api/createBooking";
       static const String ADD_TO_CART = BASE_URL +"api/addToCart";
       static const String BOOKING_URL = BASE_URL +"api/getBookings";
       static const String HISTORY_BOOKING_URL = BASE_URL+"api/getBookingsHistory";

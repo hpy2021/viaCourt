@@ -3,9 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:via_court/Constants/AppColors.dart';
 import 'package:via_court/Constants/AppTextStyles.dart';
+import 'package:via_court/Models/userResponse.dart';
 import 'package:via_court/Widgets/custom_background_common_View.dart';
 
 class EditProfile extends StatefulWidget {
+  UserResponse user;
+  EditProfile({@required this.user});
   @override
   _EditProfileState createState() => _EditProfileState();
 }
@@ -63,6 +66,9 @@ class _EditProfileState extends State<EditProfile> {
         children: [
           Row(
             children: [
+              InkWell(
+                  onTap: ()=>Navigator.pop(context),
+                  child: Icon(Icons.arrow_back_ios_outlined,color: Colors.white,)),
               Text(
                 "Edit  ",
                 style: TextStyle(color:Colors.transparent),
@@ -94,7 +100,7 @@ class _EditProfileState extends State<EditProfile> {
           ),
           SizedBox(height:9),
           Text(
-            "John Smit",
+            "${widget.user.firstname+" "+ widget.user.lastname}",
             style: AppTextStyles.textStyle25white,
           ),
         ],
@@ -112,7 +118,7 @@ class _EditProfileState extends State<EditProfile> {
         Text("INFORMATION",  style: TextStyle(color: AppColors.lightGreenText_color,fontSize: 16),),
         SizedBox(
           height: 27,
-        ), _textIconWidget(text: "Jhone",label: "First Name"),
+        ), _textIconWidget(text: "${widget.user.firstname}",label: "First Name"),
         SizedBox(
           height: 15,
         ),
@@ -120,7 +126,7 @@ class _EditProfileState extends State<EditProfile> {
         SizedBox(
           height: 15,
         ),
-        _textIconWidget(text: "Smith",label: "Last Name"),
+        _textIconWidget(text: "${widget.user.lastname}",label: "Last Name"),
         SizedBox(
           height: 15,
         ),
@@ -128,7 +134,7 @@ class _EditProfileState extends State<EditProfile> {
         SizedBox(
           height: 15,
         ),
-        _textIconWidget(text: "jhoinsmith@gmail.com",label: "Email"),
+        _textIconWidget(text: "${widget.user.email}",label: "Email"),
         SizedBox(
           height: 15,
         ),   Divider(color: Color(0xffBAC2DA),),

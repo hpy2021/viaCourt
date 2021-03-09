@@ -21,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  UserResponse user;
   bool isLoading = false;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String _homeScreenText = "Waiting for token...";
@@ -67,9 +68,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: _buildBody(context),
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Colors.white,
+          body: _buildBody(context),
+        ),
+        AppConstants.progress(isLoading, context)
+      ],
     );
   }
 
@@ -82,11 +88,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       UserResponse registerResponse = UserResponse.fromJson(
           await ApiManager().getCallwithheader(AppStrings.USER_URL));
 
-      if (registerResponse.status == 200) {
+      if (registerResponse.status == "Active") {
         if (mounted)
           setState(() {
             isLoading = false;
           });
+        print(registerResponse.firstname);
+        user = registerResponse;
+        setState(() {
+
+        });
         AppConstants().showToast(msg: "User returned SuccessFully");
       } else {
         if (mounted)
@@ -108,7 +119,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 46,
           ),
-          header("John smith", context),
+          user == null ?
+          header("user", context):
+          header("${user.firstname + " " + user.lastname}", context),
           SizedBox(
             height: 13,
           ),
@@ -139,8 +152,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: EdgeInsets.only(left: 13, right: 20),
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => EditProfile()));
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => EditProfile(user: user,)));
         },
         child: Row(
           children: [
@@ -170,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SizedBox(
           height: 37,
         ),
-        _textIconWidget(text: "My Profile", url: "assets/images/profile.png"),
+        _textIconWidget(text: "My Profile", url: "assets/images/profile.png",onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> EditProfile(user: user,)))),
         SizedBox(
           height: 34,
         ),

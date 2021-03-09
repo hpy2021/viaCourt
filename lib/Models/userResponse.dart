@@ -6,7 +6,7 @@ class UserResponse {
   String updatedAt;
   String firstname;
   String lastname;
-  int status;
+  String status;
 
   UserResponse(
       {this.id,

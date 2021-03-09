@@ -89,7 +89,8 @@ class _BookingHistoryState extends State<BookingHistory> {
                 bookedDate = DateFormat("MMMM dd, yyyy").format(
                     DateTime.parse("${bookingList[index].bookingDate}"));
                 return _bookingListItem(bookingList[index]);
-              },),
+              },
+            ),
     );
   }
 
@@ -125,7 +126,7 @@ class _BookingHistoryState extends State<BookingHistory> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              "Booking no: ${bookings.bookingNumber}",
+                              "${bookings.bookingNumber}",
                               style: AppTextStyles.textStyle15mediumblack,
                             ),
                             Text(
@@ -188,6 +189,7 @@ class _BookingHistoryState extends State<BookingHistory> {
   }
 
   _imageView(String url) {
+    print("${AppStrings.IMGBASE_URL + url}");
     return Container(
       child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -196,13 +198,17 @@ class _BookingHistoryState extends State<BookingHistory> {
             height: 40,
             width: 40,
             fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) => Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SpinKitCircle(
-                color: AppColors.appColor_color,
-                size: 50,
-              ),
-            ),
+
+            // loadingBuilder: (context, child, loadingProgress) {
+            //   print(child);
+            //   return Padding(
+            //     padding: const EdgeInsets.all(20.0),
+            //     child: SpinKitCircle(
+            //       color: AppColors.appColor_color,
+            //       size: 50,
+            //     ),
+            //   );
+            // },
             errorBuilder: (context, url, error) => Icon(Icons.error),
           )),
     );
