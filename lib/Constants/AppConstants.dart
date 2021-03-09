@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:via_court/Constants/AppColors.dart';
@@ -84,20 +83,18 @@ class AppConstants {
   static  imageLoader(String url, String placeholder) {
     return
         Container(
-          child: CachedNetworkImage(
-      // height: height,
-      fit: BoxFit.contain,
-      imageUrl: AppStrings.IMGBASE_URL + url,
-      progressIndicatorBuilder:
-            (context, url, downloadProgress) =>
-            Padding(
+          child:Image.network("$url",
+            // height: 40,
+            // width: 40,
+            fit: BoxFit.cover,loadingBuilder: (context, child, loadingProgress) =>  Padding(
               padding: const EdgeInsets.all(20.0),
               child: SpinKitCircle(
                 color: AppColors.appColor_color,
-                size: 50,),
+                size: 50,
+              ),
             ),
-      errorWidget: (context, url, error) => Icon(Icons.error),
-    ),
+            errorBuilder: (context, url, error) => Icon(Icons.error),
+          )
         );
   }
 

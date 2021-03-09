@@ -15,7 +15,7 @@ class BottomNavigationBarView extends StatefulWidget {
 }
 
 class _BottomNavigationBarViewState extends State<BottomNavigationBarView> {
-  Widget _widget = HomeScreen();
+  Widget _widget = SelectCourtSize();
   int _selectedIndex = 0;
 
 
@@ -27,7 +27,7 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView> {
       });
     switch (index) {
       case 0:
-        changewidget(HomeScreen());
+        changewidget(SelectCourtSize());
         break;
       case 1:
         changewidget(BookingScreen());

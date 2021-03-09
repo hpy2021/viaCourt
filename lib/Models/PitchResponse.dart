@@ -24,55 +24,82 @@ class PitchesResponse {
   }
 }
 
+// class PitchData {
+//   int id;
+//   String name;
+//   String size;
+//   String availableDays;
+//   String title;
+//   int price;
+//   String slotDurationStartTime;
+//   String slotDurationEndTime;
+//   int sloteDuration;
+//   String pitchImage;
+//
+//   PitchData(
+//       {this.id,
+//         this.name,
+//         this.size,
+//         this.availableDays,
+//         this.title,
+//         this.price,
+//         this.slotDurationStartTime,
+//         this.slotDurationEndTime,
+//         this.sloteDuration,
+//         this.pitchImage});
+//
+//   PitchData.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     name = json['name'];
+//     size = json['size'];
+//     availableDays = json['available_days'];
+//     title = json['title'];
+//     price = json['price'];
+//     slotDurationStartTime = json['slot_duration_start_time'];
+//     slotDurationEndTime = json['slot_duration_end_time'];
+//     sloteDuration = json['slote_duration'];
+//     pitchImage = json['pitch_image'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['id'] = this.id;
+//     data['name'] = this.name;
+//     data['size'] = this.size;
+//     data['available_days'] = this.availableDays;
+//     data['title'] = this.title;
+//     data['price'] = this.price;
+//     data['slot_duration_start_time'] = this.slotDurationStartTime;
+//     data['slot_duration_end_time'] = this.slotDurationEndTime;
+//     data['slote_duration'] = this.sloteDuration;
+//     data['pitch_image'] = this.pitchImage;
+//     return data;
+//   }
+// }
 class PitchData {
   int id;
-  String name;
   String size;
   String availableDays;
-  String title;
   int price;
-  String slotDurationStartTime;
-  String slotDurationEndTime;
-  int sloteDuration;
-  String pitchImage;
+  int courtsId;
 
-  PitchData(
-      {this.id,
-        this.name,
-        this.size,
-        this.availableDays,
-        this.title,
-        this.price,
-        this.slotDurationStartTime,
-        this.slotDurationEndTime,
-        this.sloteDuration,
-        this.pitchImage});
+  PitchData({this.id, this.size, this.availableDays, this.price, this.courtsId});
 
   PitchData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
     size = json['size'];
     availableDays = json['available_days'];
-    title = json['title'];
     price = json['price'];
-    slotDurationStartTime = json['slot_duration_start_time'];
-    slotDurationEndTime = json['slot_duration_end_time'];
-    sloteDuration = json['slote_duration'];
-    pitchImage = json['pitch_image'];
+    courtsId = json['courts_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['name'] = this.name;
     data['size'] = this.size;
     data['available_days'] = this.availableDays;
-    data['title'] = this.title;
     data['price'] = this.price;
-    data['slot_duration_start_time'] = this.slotDurationStartTime;
-    data['slot_duration_end_time'] = this.slotDurationEndTime;
-    data['slote_duration'] = this.sloteDuration;
-    data['pitch_image'] = this.pitchImage;
+    data['courts_id'] = this.courtsId;
     return data;
   }
 }

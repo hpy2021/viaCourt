@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,8 +14,14 @@ import 'package:via_court/Models/CourtListModel.dart';
 import 'package:via_court/Utils/ApiManager.dart';
 import 'package:via_court/Views/SelectCourtSizeScreen.dart';
 import 'package:http/http.dart' as http;
+import 'package:via_court/Views/selectTimeSlot.dart';
 
 class HomeScreen extends StatefulWidget {
+  int pitchId;
+  DateTime selectedDate;
+
+  HomeScreen({@required this.pitchId,@required this.selectedDate});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -44,9 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
     Map<String, dynamic> request = new HashMap();
+    request["pitch_id"] = widget.pitchId.toString();
 
     CourtListResponse response = CourtListResponse.fromJson(
-        await ApiManager().getCall(AppStrings.COURT_URL));
+      await ApiManager().postCall(AppStrings.COURT_URL, request, context),
+    );
     // CourtListResponse response = CourtListResponse.fromJson(await ApiManager()
     //     .postCallWithHeader(AppStrings.PITCHES_URL+"/4",request,context));
 
@@ -72,12 +79,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         Scaffold(
-            body: AnnotatedRegion(
-          child: _buildBody(),
-          value: SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: Brightness.light),
-        )),
+          body: AnnotatedRegion(
+            child: _buildBody(),
+            value: SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: Brightness.light),
+          ),
+        ),
         AppConstants.progress(isLoading, context)
       ],
     );
@@ -97,11 +105,11 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: 3,
           ),
-          Container(
-            padding: EdgeInsets.only(left: 13, right: 20),
-            child: Text(AppStrings.listofCourttext,
-                style: AppTextStyles.textStyle16),
-          ),
+          // Container(
+          //   padding: EdgeInsets.only(left: 13, right: 20),
+          //   child: Text(AppStrings.listofCourttext,
+          //       style: AppTextStyles.textStyle16),
+          // ),
           SizedBox(
             height: 13,
           ),
@@ -115,11 +123,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       padding: EdgeInsets.only(left: 13, right: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            AppStrings.selectCourttext,
-            style: AppTextStyles.textStyle25white,
+          InkWell(
+
+            onTap: ()=>Navigator.pop(context),
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          SizedBox(width: 15),
+          Expanded(
+            child: Text(
+              AppStrings.selectCourttext,
+              style: AppTextStyles.textStyle25white,
+            ),
           ),
           Stack(
             alignment: Alignment.centerRight,
@@ -160,6 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: courtData.length != 0
             ? ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: courtData.length,
                 itemBuilder: (BuildContext context, int index) {
                   return _courtListItemView(courtData[index]);
@@ -184,10 +205,14 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => SelectCourtSize(
-                        pitchId: data.id,
-                        locationId: data.locationsId,
-                      ))),
+                  builder: (context) => SelectTimeSlot(
+                    pitchId: widget.pitchId,
+                        selectedDate: widget.selectedDate,
+                        price: data.price,
+                        courtId:data.courtId ,
+                        // pitchId: data.id,
+                        // locationId: data.locationsId,
+                      ),),),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -197,21 +222,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
-                    child: CachedNetworkImage(
-                      height: 192,
+                    child:   Image.network("${AppStrings.IMGBASE_URL + data.courtImage}",
+                      height: 192 ,
                       width: 379,
-                      fit: BoxFit.cover,
-                      imageUrl: AppStrings.IMGBASE_URL + data.courtImage,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Padding(
+                      fit: BoxFit.cover,loadingBuilder: (context, child, loadingProgress) =>  Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: SpinKitCircle(
                           color: AppColors.appColor_color,
-                          size: 50,
+                          size: 20,
                         ),
                       ),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    )
+                      errorBuilder: (context, url, error) => Icon(Icons.error),
+                    ),
                     // child:AppConstants.imageLoader(data.courtImage, "")
                     // CachedNetworkImage(
                     //   imageUrl: "http://via.placeholder.com/200x150",
@@ -225,6 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     //     ),
                     //   ),
                     //   placeholder: (context, url) => CircularProgressIndicator(),
+
                     //   errorWidget: (context, url, error) => Icon(Icons.error),
                     // ),
                     // child: Image.network(

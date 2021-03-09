@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,10 +7,13 @@ import 'package:via_court/Constants/AppConstants.dart';
 import 'package:via_court/Constants/AppStrings.dart';
 import 'package:via_court/Constants/AppTextStyles.dart';
 import 'package:via_court/Models/SignUpResposne.dart';
+import 'package:via_court/Models/userResponse.dart';
+import 'package:via_court/Models/userResponse.dart';
 import 'package:via_court/Utils/ApiManager.dart';
 import 'package:via_court/Views/EditProfile.dart';
 import 'package:via_court/Views/LoginScreen.dart';
 import 'package:via_court/Widgets/custom_background_common_View.dart';
+import 'package:via_court/Utils/firebaseMessagingService.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -18,12 +22,47 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isLoading = false;
-
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String _homeScreenText = "Waiting for token...";
+  String _messageText = "Waiting for message...";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     userApiCall();
+    // _firebaseMessaging.configure(
+    //   onMessage: (Map<String, dynamic> message) async {
+    //     setState(() {
+    //       _messageText = "Push Messaging message: $message";
+    //     });
+    //     print("onMessage: $message");
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) async {
+    //     setState(() {
+    //       _messageText = "Push Messaging message: $message";
+    //     });
+    //     print("onLaunch: $message");
+    //   },
+    //   onResume: (Map<String, dynamic> message) async {
+    //     setState(() {
+    //       _messageText = "Push Messaging message: $message";
+    //     });
+    //     print("onResume: $message");
+    //   },
+    // );
+    // _firebaseMessaging.requestNotificationPermissions(
+    //     const IosNotificationSettings(sound: true, badge: true, alert: true));
+    // _firebaseMessaging.onIosSettingsRegistered
+    //     .listen((IosNotificationSettings settings) {
+    //   print("Settings registered: $settings");
+    // });
+    // _firebaseMessaging.getToken().then((String token) {
+    //   assert(token != null);
+    //   setState(() {
+    //     _homeScreenText = "Push Messaging token: $token";
+    //   });
+    //   print(_homeScreenText);
+    // });
   }
 
   @override
@@ -40,21 +79,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
           isLoading = true;
         });
-      SignUpResponse registerResponse = SignUpResponse.fromJson(
+      UserResponse registerResponse = UserResponse.fromJson(
           await ApiManager().getCallwithheader(AppStrings.USER_URL));
 
-      if (registerResponse.status == 201) {
+      if (registerResponse.status == 200) {
         if (mounted)
           setState(() {
             isLoading = false;
           });
-        AppConstants().showToast(msg: "User Created SuccessFully");
+        AppConstants().showToast(msg: "User returned SuccessFully");
       } else {
         if (mounted)
           setState(() {
             isLoading = false;
           });
-        AppConstants().showToast(msg: "${registerResponse.message}");
+        // AppConstants().showToast(msg: "${registerResponse.message}");
       }
     }
   }

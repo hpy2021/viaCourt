@@ -1,7 +1,8 @@
 class AppStrings {
-      static const String BASE_URL = "http://992fcccdd96f.ngrok.io/";
-    static const String IMGBASE_URL = "http://992fcccdd96f.ngrok.io/";
-  static const String COURT_URL = BASE_URL + "api/getCourts";
+      static const String BASE_URL = "http://c1cb11445604.ngrok.io/";
+    static const String IMGBASE_URL = "http://c1cb11445604.ngrok.io/";
+      static const String COURT_URL = BASE_URL + "api/pitch/getCourts";
+      static const String COOCKIE = "COOKIE";
 
   static const String TOKEN_KEY = "Token";
   static const String REGISTRATION_URL = BASE_URL + "register";
@@ -12,7 +13,10 @@ class AppStrings {
   static const String PRODUCT_URL = BASE_URL +"api/getServices";
     static const String AVAILABILITY_URL = BASE_URL +"api/pitches";
     static const String BOOKING_CONFIRM_URL = BASE_URL +"api/createBooking";
-    static const String ADD_TO_CART = BASE_URL +"api/addToCart";
+      static const String ADD_TO_CART = BASE_URL +"api/addToCart";
+      static const String BOOKING_URL = BASE_URL +"api/getBookings";
+      static const String HISTORY_BOOKING_URL = BASE_URL+"api/getBookingsHistory";
+
 
 
       static const String CART_URL = BASE_URL +"api/cart";
@@ -47,16 +51,20 @@ class AppStrings {
   static const String bookingText = "Booking";
   static const String activityText = "Activity";
   static const String meText = "Me";
-  static const String selectSlot = "Select Slot";
+      static const String selectSlot = "Select Slot";
+      static const String selectdate = "Select Date";
+      // static const String selectdate = "Select Date";
   static const String bookingConfirmedText = "Booking Confirmed";
   static const String reviewbookingText = "Review Booking";
   static const String confirmBookingText = "Confirm Booking";
-  static const String continueText = "Continue";
+      static const String continueText = "Continue";
+      static const String bookText = "Book";
   static const String productsText = "Products";
   static const String cartText = "Cart";
   static const String proceedToCheckOutText = "Proceed to Checkout";
   static const String checkOutText = "Checkout";
   static const String payText = "Pay";
-  static const String confirmationText = "Confirmation";
+      static const String confirmationText = "Confirmation";
+      static const String confirmText = "Confirm";
   static const String doneText = "Done";
 }

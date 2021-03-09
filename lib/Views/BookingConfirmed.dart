@@ -16,8 +16,9 @@ import 'package:via_court/Widgets/custom_button.dart';
 
 class BookingConfirmed extends StatefulWidget {
   Booking booking;
+  String courtName;
 
-  BookingConfirmed({@required this.booking});
+  BookingConfirmed({@required this.booking,this.courtName});
 
   @override
   _BookingConfirmedState createState() => _BookingConfirmedState();
@@ -30,7 +31,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
 
   @override
   void initState() {
-    print(widget.booking.price);
+    // print(widget.booking.price);
     // TODO: implement initState
     super.initState();
     sportsItemList.add(SportsItemView(
@@ -156,87 +157,115 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
 
   mainBody() {
     return BackgroundCurvedView(
-        widget: SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 22),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 27,
+        widget: Container(
+          padding: EdgeInsets.symmetric(horizontal: 22),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 27,
+              ),
+              _imageView(),
+              SizedBox(
+                height: 20,
+              ),
+              _detailsView(),
+              SizedBox(
+                height: 16,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 0.0, right: 16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      color: AppColors.appColor_color,
+                      size: 25,
+                    ),
+                    SizedBox(width: 5.7),
+                    Expanded(
+                        child: Text(
+                          // "${data.address1 == null ? "Address" : data.address1}",
+                          "Soccer City Ave Nasrec, Johnesburg, 2147, South Africa",
+                          style: AppTextStyles.textStyle14green,
+                        ))
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              _iconTextWidget(
+                  text: "$bookedDate", icon: Icons.calendar_today_outlined),
+            // text: "January 29, 2021", icon: Icons.calendar_today_outlined),
+              SizedBox(
+                height: 16,
+              ),
+              _iconTextWidget(
+                  text: "$_startTime - $_endTime", icon: Icons.access_time_outlined),
+            // text: "10:30 AM - 11:20 AM", icon: Icons.access_time_outlined),
+            Expanded(
+              child: SizedBox(
+                  height: 16,
+                ),
             ),
-            _imageView(),
-            SizedBox(
-              height: 20,
-            ),
-            _detailsView(),
-            _iconTextWidget(
-                text: "$bookedDate", icon: Icons.calendar_today_outlined),
-            SizedBox(
-              height: 16,
-            ),
-            _iconTextWidget(
-                text: "$_startTime - $_endTime", icon: Icons.access_time_outlined),
-            SizedBox(
-              height: 16,
-            ),
-            Divider(
-              thickness: 1,
-              color: Color(0xffCECECE),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text("Available Sports",
-                style: AppTextStyles.textStyle14mediumblack),
-            SizedBox(
-              height: 15,
-            ),
-            Container(
-                height: 38,
-                width: double.infinity,
-                child: _availableSportList()),
-            SizedBox(
-              height: 16,
-            ),
-            Divider(
-              thickness: 1,
-              color: Color(0xffCECECE),
-            ),
-            // Expanded(child: Container(),),
-            // SizedBox(
-            //   height: 10,http://cb548057bf17.ngrok.io/api/addToCart
-            //
-            // 'bookings_id' => 'required',
-            // 'users_id' =>'required',
-            // 'price'=> 'required',
-            // 'services_id' =>'required',
-            // ),
-            // Text("Available Items",
-            //     style: AppTextStyles.textStyle14mediumblack),
-            //
-            // SizedBox(
-            //   height: 9,
-            // ),
-            // Container(
-            //     height: 50,
-            //     width: double.infinity,
-            //     child: _additionalItemsView()),
-            SizedBox(
-              height: 21,
-            ),
-            _bottomContinueButton(),
-            SizedBox(
-              height: 20,
-            ),
-            // _SizedBox(
-            //               height: 21,
-            //             ),availableSportList()
-          ],
-        ),
-      ),
-    ));
+              // Divider(
+              //   thickness: 1,
+              //   color: Color(0xffCECECE),
+              // ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // Text("Available Sports",
+              //     style: AppTextStyles.textStyle14mediumblack),
+              // SizedBox(
+              //   height: 15,
+              // ),
+              // Container(
+              //     height: 38,
+              //     width: double.infinity,
+              //     child: _availableSportList()),
+              // SizedBox(
+              //   height: 16,
+              // ),
+              // Divider(
+              //   thickness: 1,
+              //   color: Color(0xffCECECE),
+              // ),
+              // Expanded(child: Container(),),
+              // SizedBox(
+              //   height: 10,http://cb548057bf17.ngrok.io/api/addToCart
+              //
+              // 'bookings_id' => 'required',
+              // 'users_id' =>'required',
+              // 'price'=> 'required',
+              // 'services_id' =>'required',
+              // ),
+              // Text("Available Items",
+              //     style: AppTextStyles.textStyle14mediumblack),
+              //
+              // SizedBox(
+              //   height: 9,
+              // ),
+              // Container(
+              //     height: 50,
+              //     width: double.infinity,
+              //     child: _additionalItemsView()),
+              SizedBox(
+                height: 21,
+              ),
+              _bottomContinueButton(),
+              SizedBox(
+                height: 20,
+              ),
+              // _SizedBox(
+              //               height: 21,
+              //             ),availableSportList()
+            ],
+          ),
+        ));
   }
 
   _imageView() {
@@ -292,12 +321,18 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
         child: ListTile(
       contentPadding: EdgeInsets.zero,
       title:
-          Text("Lorem ipsum dolor sit", style: AppTextStyles.textStyle18medium),
+          Text("${widget.courtName}", style: AppTextStyles.textStyle18medium),
       trailing:
           Text("\$ ${widget.booking.price}", style: AppTextStyles.textStyle18mediumwithGreen),
-      subtitle: Text("Width : 58 ft/17.68 m, Lenth : 6 ft/1.83 m.",
-          style: AppTextStyles.textStyle14grey),
-    ));
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Lorem ipsum dolor sit",
+              style: AppTextStyles.textStyle14grey),  Text("Width : 58 ft/17.68 m, Lenth : 6 ft/1.83 m.",
+                  style: AppTextStyles.textStyle14grey),
+            ],
+          ),
+    ),);
   }
 
   _iconTextWidget({IconData icon, String text}) {
@@ -387,9 +422,9 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
         onPressed: () {
           // availablityCheckApi();
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProductScreen(bookingId:widget.booking.id,userId: int.parse(widget.booking.usersId) ,pitchId:int.parse(widget.booking.pitchId) ,)));
+              MaterialPageRoute(builder: (context) => ProductScreen(bookingId:widget.booking.id,userId: int.parse(widget.booking.usersId) ,pitchId:int.parse(widget.booking.pitchId) ,),),);
         },
-        text: AppStrings.continueText);
+        text: AppStrings.confirmText);
   }
 }
 

@@ -1,14 +1,71 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:via_court/Constants/AppColors.dart';
-import 'package:via_court/Constants/AppConstants.dart';
-import 'package:via_court/Constants/AppStrings.dart';
-import 'package:via_court/Widgets/custom_background_common_View.dart';
+import '../Constants/AppColors.dart';
+import '../Constants/AppConstants.dart';
+import '../Constants/AppStrings.dart';
+import '../Models/BookingResponse.dart';
+import '../Views/BookinHistoryView.dart';
+import '../Widgets/custom_background_common_View.dart';
 
-class BookingScreen extends StatelessWidget {
+class BookingScreen extends StatefulWidget {
+  @override
+  _BookingScreenState createState() => _BookingScreenState();
+}
+
+class _BookingScreenState extends State<BookingScreen>
+    with TickerProviderStateMixin {
+  bool isLoading = false;
+  List<Bookings> bookingList = [];
+  TabController _tabController;
+ @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _buildBody(context),
+    );
+  }
+
+  _body() {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: TabBar(
+          controller: _tabController,
+          isScrollable: false,
+          indicatorColor:AppColors.home_gradient2,
+          labelPadding: EdgeInsets.only(bottom: 5),
+          indicatorPadding: EdgeInsets.all(0.0),
+          indicatorWeight: 2,
+          tabs: <Widget>[
+            Container(
+              child: Text(
+                "Recent",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              ),
+            ),
+            Container(
+              child: Text(
+                "History",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              ),
+            ),
+          ],
+        ),
+        body: BackgroundCurvedView(
+          widget: TabBarView(
+            dragStartBehavior: DragStartBehavior.down,
+            controller: _tabController,
+            children: <Widget>[BookingHistory(isHistory: false,), BookingHistory(isHistory: true,)],
+          ),
+        ),
+      ),
     );
   }
 
@@ -22,31 +79,13 @@ class BookingScreen extends StatelessWidget {
           SizedBox(
             height: 46,
           ),
-          AppConstants().header(text: AppStrings.bookingText,context: context),
+          AppConstants().header(text: AppStrings.bookingText, context: context),
           SizedBox(
-            height: 13,
+            height: 20,
           ),
-          Flexible(child: mainBody())
+          Flexible(child: _body())
         ],
       ),
     );
   }
-
-  mainBody() {
-    return BackgroundCurvedView(
-        widget: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text("Booking screen is under progress"),
-                ),
-              )
-            ],
-          ),
-        ));
-  }
-
 }

@@ -1,6 +1,7 @@
 class BookingConfirmedResponse {
   String message;
   Booking booking;
+  List<Court> court;
 
   BookingConfirmedResponse({this.message, this.booking});
 
@@ -8,6 +9,12 @@ class BookingConfirmedResponse {
     message = json['message'];
     booking =
     json['booking'] != null ? new Booking.fromJson(json['booking']) : null;
+    if (json['court'] != null) {
+      court = new List<Court>();
+      json['court'].forEach((v) {
+        court.add(new Court.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -15,6 +22,9 @@ class BookingConfirmedResponse {
     data['message'] = this.message;
     if (this.booking != null) {
       data['booking'] = this.booking.toJson();
+    }
+    if (this.court != null) {
+      data['court'] = this.court.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -89,6 +99,21 @@ class Booking {
     data['updated_at'] = this.updatedAt;
     data['created_at'] = this.createdAt;
     data['id'] = this.id;
+    return data;
+  }
+}
+class Court {
+  String title;
+
+  Court({this.title});
+
+  Court.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['title'] = this.title;
     return data;
   }
 }

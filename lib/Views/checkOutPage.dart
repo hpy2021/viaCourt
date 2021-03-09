@@ -1,29 +1,27 @@
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:credit_card_slider/card_background.dart';
-import 'package:credit_card_slider/credit_card_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:via_court/Constants/AppColors.dart';
-import 'package:via_court/Constants/AppConstants.dart';
-import 'package:via_court/Constants/AppStrings.dart';
-import 'package:via_court/Constants/AppTextStyles.dart';
-import 'package:via_court/Views/Confirmation.dart';
-import 'package:via_court/Widgets/custom_background_common_View.dart';
-import 'package:via_court/Widgets/custom_button.dart';
+import '../Constants/AppColors.dart';
+import '../Constants/AppConstants.dart';
+import '../Constants/AppStrings.dart';
+import '../Constants/AppTextStyles.dart';
+import '../Views/Confirmation.dart';
+import '../Widgets/custom_background_common_View.dart';
+import '../Widgets/custom_button.dart';
 
 class CheckOutPage extends StatefulWidget {
-
   String price;
+
   CheckOutPage({this.price});
+
   @override
   _CheckOutPageState createState() => _CheckOutPageState();
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
   int _current = 0;
-
   List<Widget> cardList = List();
 
   @override
@@ -37,14 +35,16 @@ class _CheckOutPageState extends State<CheckOutPage> {
     cardList.add(Stack(
       children: [
         Container(
-            width: double.infinity,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  "assets/images/Clipped.png",
-                  width: 146,
-                  fit: BoxFit.cover,
-                ))),
+          width: double.infinity,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              "assets/images/Clipped.png",
+              width: 146,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
         Container(
           padding: EdgeInsets.only(left: 23, top: 16),
           child: Column(
@@ -85,14 +85,16 @@ class _CheckOutPageState extends State<CheckOutPage> {
     cardList.add(Stack(
       children: [
         Container(
-            width: double.infinity,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  "assets/images/Clipped.png",
-                  width: 146,
-                  fit: BoxFit.cover,
-                ))),
+          width: double.infinity,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              "assets/images/Clipped.png",
+              width: 146,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
         Container(
           padding: EdgeInsets.only(left: 23, top: 16),
           child: Column(
@@ -133,14 +135,16 @@ class _CheckOutPageState extends State<CheckOutPage> {
     cardList.add(Stack(
       children: [
         Container(
-            width: double.infinity,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  "assets/images/Clipped.png",
-                  width: 146,
-                  fit: BoxFit.cover,
-                ))),
+          width: double.infinity,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              "assets/images/Clipped.png",
+              width: 146,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
         Container(
           padding: EdgeInsets.only(left: 23, top: 16),
           child: Column(
@@ -284,43 +288,45 @@ class _CheckOutPageState extends State<CheckOutPage> {
   }
 
   _carouselSlider() {
-    return Column(children: [
-      Container(
-        child: CarouselSlider(
-          items: cardList,
-          options: CarouselOptions(
-              autoPlay: false,
-              aspectRatio: 2,
-              // aspectRatio: 2.0,
-              viewportFraction: 0.9,
-              enlargeCenterPage: true,
-              enableInfiniteScroll: false,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              }),
+    return Column(
+      children: [
+        Container(
+          child: CarouselSlider(
+            items: cardList,
+            options: CarouselOptions(
+                autoPlay: false,
+                aspectRatio: 2,
+                // aspectRatio: 2.0,
+                viewportFraction: 0.9,
+                enlargeCenterPage: true,
+                enableInfiniteScroll: false,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                }),
+          ),
         ),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: cardList.map((url) {
-          int index = cardList.indexOf(url);
-          return Container(
-            width: 9.0,
-            height: 9.0,
-            // margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-            margin: EdgeInsets.fromLTRB(0, 15, 16, 15),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _current == index
-                  ? AppColors.lightGreenText_color
-                  : Color.fromRGBO(236, 235, 237, 100),
-            ),
-          );
-        }).toList(),
-      )
-    ],);
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: cardList.map((url) {
+            int index = cardList.indexOf(url);
+            return Container(
+              width: 9.0,
+              height: 9.0,
+              // margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+              margin: EdgeInsets.fromLTRB(0, 15, 16, 15),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _current == index
+                    ? AppColors.lightGreenText_color
+                    : Color.fromRGBO(236, 235, 237, 100),
+              ),
+            );
+          }).toList(),
+        )
+      ],
+    );
   }
 
   _bottomContinueButton() {
@@ -333,7 +339,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ConfirmationScreen(price: widget.price,)));
+                      builder: (context) => ConfirmationScreen(
+                            price: widget.price,
+                          )));
             },
             text: AppStrings.payText),
       ),

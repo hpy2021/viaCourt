@@ -33,6 +33,7 @@ class CourtData {
   String city;
   String state;
   String country;
+  int courtId;
   String courtImage;
   int locationsId;
 
@@ -43,6 +44,7 @@ class CourtData {
         this.price,
         this.address1,
         this.address2,
+        this.courtId,
         this.city,
         this.state,
         this.country,
@@ -55,6 +57,7 @@ class CourtData {
     price = json['price'];
     address1 = json['address1'];
     address2 = json['address2'];
+    courtId = json['court_id'];
     city = json['city'];
     state = json['state'];
     country = json['country'];
@@ -67,6 +70,7 @@ class CourtData {
     data["id"] =  this.id;
     data['title'] = this.title;
     data['price'] = this.price;
+    data['court_id'] = this.courtId;
     data['address1'] = this.address1;
     data['address2'] = this.address2;
     data['city'] = this.city;

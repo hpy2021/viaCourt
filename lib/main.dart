@@ -5,7 +5,9 @@ import 'package:via_court/Constants/AppColors.dart';
 import 'package:via_court/Views/SplashScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   runApp( EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
       path: 'assets/language',// <-- change patch to your

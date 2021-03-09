@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
           sharedPreferences = await SharedPreferences.getInstance();
           await sharedPreferences.setString(
-              AppStrings.TOKEN_KEY, registerResponse.csrf);
+              AppStrings.TOKEN_KEY, registerResponse.token);
          await sharedPreferences.setBool("isRemindme", isSwitchedOn);
 
           Navigator.pushReplacement(
@@ -181,10 +181,11 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 22),
       child: CustomButton(
         onPressed: () {
+
           _validationCheck();
           // Navigator.push(
           //   context,
-          //   MaterialPageRoute(builder: (context) => OtpScreen()),
+          //   MaterialPageRoute(builder: (context) => BottomNavigationBarView()),
           // );
         },
         text: AppStrings.loginButtonText,

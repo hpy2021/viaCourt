@@ -1,8 +1,9 @@
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -15,13 +16,14 @@ import 'package:via_court/Models/CourtListModel.dart';
 import 'package:via_court/Models/PitchResponse.dart';
 import 'package:via_court/Provider/CourtProvider.dart';
 import 'package:via_court/Utils/ApiManager.dart';
+import 'package:via_court/Views/SelectDateScreen.dart';
 import 'package:via_court/Views/SelectSlot.dart';
 import 'package:http/http.dart' as http;
 
 class SelectCourtSize extends StatefulWidget {
-  int pitchId, locationId;
+  // int pitchId, locationId;
 
-  SelectCourtSize({@required this.pitchId, this.locationId});
+  // SelectCourtSize({@required this.pitchId, this.locationId});
 
   @override
   _SelectCourtSizeState createState() => _SelectCourtSizeState();
@@ -35,16 +37,18 @@ class _SelectCourtSizeState extends State<SelectCourtSize> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getCourtSize(widget.locationId);
+    // getCourtSize(widget.locationId);
+    getCourtSize();
+
   }
 
-  getCourtSize(int id) async {
+  getCourtSize() async {
     if (await ApiManager.checkInternet()) {
       if (mounted)
         setState(() {
           isLoading = true;
         });
-      print(id);
+      // print(id);
       Map<String, dynamic> request = new HashMap();
 
       // request["name"] = "abc";
@@ -57,10 +61,11 @@ class _SelectCourtSizeState extends State<SelectCourtSize> {
       // request["booking_date"] = "2021-02-27";
       // request["locations_id"] = widget.locationId;
       PitchesResponse response = new PitchesResponse.fromJson(await ApiManager()
-          .postCallWithHeader(
-              AppStrings.PITCHES_URL + "/" + widget.locationId.toString(),
-              request,
-              context)); // api call
+          .getCallwithheader(
+          // AppStrings.PITCHES_URL + "/" + widget.locationId.toString(),
+          AppStrings.PITCHES_URL,
+
+              ),); // api call
       // PitchesResponse response = new PitchesResponse.fromJson(await ApiManager()
       //     .postCallWithHeader(AppStrings.PITCH_TIME_SLOT_URL, request, context));
       if (response.status == 200) {
@@ -105,12 +110,12 @@ class _SelectCourtSizeState extends State<SelectCourtSize> {
           SizedBox(
             height: 46,
           ),
-          _header(),
+          _header2(),
           SizedBox(
             height: 3,
           ),
           SizedBox(
-            height: 13,
+            height: kIsWeb? 0:13,
           ),
           Expanded(child: _courtListView())
         ],
@@ -177,111 +182,131 @@ class _SelectCourtSizeState extends State<SelectCourtSize> {
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SelectSlot(
-                      courtid: widget.pitchId,
-                      locationid: widget.locationId,
-                      pitchid: courtList.id,
-                  price: courtList.price,
+                builder: (context) => SelectDateScreen(
+                  //     courtid: widget.pitchId,
+                  //     locationid: widget.locationId,
+                      pitchId: courtList.id,
+                  // price: courtList.price,
                     ))),
         child: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        // topRight: Radius.circular(10),
-                      ),
-                      child: CachedNetworkImage(
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                        imageUrl: AppStrings.IMGBASE_URL + courtList.pitchImage,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: SpinKitCircle(
-color: AppColors.appColor_color,
-                                      size: 50,),
-                                ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      )
-                      // child:AppConstants.imageLoader(courtList.pitchImage, "")
-                      // CachedNetworkImage(
-                      //   imageUrl: "http://via.placeholder.com/200x150",
-                      //   imageBuilder: (context, imageProvider) => Container(
-                      //     decoration: BoxDecoration(
-                      //       image: DecorationImage(
-                      //           image: imageProvider,
-                      //           fit: BoxFit.cover,
-                      //           colorFilter:
-                      //           ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
-                      //     ),
-                      //   ),
-                      //   placeholder: (context, url) => CircularProgressIndicator(),
-                      //   errorWidget: (context, url, error) => Icon(Icons.error),
-                      // ),
-                      // child: Image.network(
-                      //   "${AppStrings.IMGBASE_URL + courtList.pitchImage}",
-                      //   height: 100,
-                      //   width: 100,
-                      //   fit: BoxFit.cover,
-                      // ),
-                      ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 17, 0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                AppStrings.pitchNameText,
-                                style: AppTextStyles.textStyle14medium,
-                              ),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+//                 Container(
+//                   child: ClipRRect(
+//                       borderRadius: BorderRadius.only(
+//                         topLeft: Radius.circular(10),
+//                         // topRight: Radius.circular(10),
+//                       ),
+//                       child: CachedNetworkImage(
+//                         height: 100,
+//                         width: 100,
+//                         fit: BoxFit.cover,
+//                         imageUrl: AppStrings.IMGBASE_URL + courtList.pitchImage,
+//                         progressIndicatorBuilder:
+//                             (context, url, downloadProgress) =>
+//                                 Padding(
+//                                   padding: const EdgeInsets.all(20.0),
+//                                   child: SpinKitCircle(
+// color: AppColors.appColor_color,
+//                                       size: 50,),
+//                                 ),
+//                         errorWidget: (context, url, error) => Icon(Icons.error),
+//                       )
+//                       // child:AppConstants.imageLoader(courtList.pitchImage, "")
+//                       // CachedNetworkImage(
+//                       //   imageUrl: "http://via.placeholder.com/200x150",
+//                       //   imageBuilder: (context, imageProvider) => Container(
+//                       //     decoration: BoxDecoration(
+//                       //       image: DecorationImage(
+//                       //           image: imageProvider,
+//                       //           fit: BoxFit.cover,
+//                       //           colorFilter:
+//                       //           ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+//                       //     ),
+//                       //   ),
+//                       //   placeholder: (context, url) => CircularProgressIndicator(),
+//                       //   errorWidget: (context, url, error) => Icon(Icons.error),
+//                       // ),
+//                       // child: Image.network(
+//                       //   "${AppStrings.IMGBASE_URL + courtList.pitchImage}",
+//                       //   height: 100,
+//                       //   width: 100,
+//                       //   fit: BoxFit.cover,
+//                       // ),
+//                       ),
+//                 ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 10, 17, 0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Width",
+                              style: AppTextStyles.textStyle14medium,
                             ),
-                            Expanded(
-                                flex: 2,
-                                child: Text(
-                                  ": ${courtList.name}",
-                                  style: AppTextStyles.textStyle14grey,
-                                ))
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 17, 0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
+                          ),
+                          Expanded(
+                              flex: 2,
                               child: Text(
-                                AppStrings.sizeText,
-                                style: AppTextStyles.textStyle14medium,
-                              ),
-                            ),
-                            Expanded(
-                                flex: 2,
-                                child: Text(
-                                  ": ${courtList.size}",
-                                  style: AppTextStyles.textStyle14grey,
-                                ))
-                          ],
-                        ),
+                                ": 58 ft/17.68 m",
+                                style: AppTextStyles.textStyle14grey,
+                              ),)
+                        ],
                       ),
-                      SizedBox(height: 5),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 5),
+
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 17, 0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              AppStrings.sizeText,
+                              style: AppTextStyles.textStyle14medium,
+                            ),
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: Text(
+                                ": ${courtList.size}",
+                                style: AppTextStyles.textStyle14grey,
+                              ))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 17, 0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "See Law",
+                              style: AppTextStyles.textStyle14medium,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              ": 9.8 m",
+                              style: AppTextStyles.textStyle14grey,
+                            ),)
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                  ],
                 ),
-              ],
-            ),
+            //   ],
+            // ),
 
             // Padding(
             //   padding: EdgeInsets.fromLTRB(21, 0, 17, 0),
@@ -320,13 +345,57 @@ color: AppColors.appColor_color,
             bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
       ),
       child: Text(
-        "\$ $text",
+        "\$ $text / Hour",
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.white,
           fontSize: 18,
           fontWeight: FontWeight.w500,
         ),
+      ),
+    );
+  }
+
+  _header2() {
+    return Container(
+      padding: EdgeInsets.only(left: 13, right: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppStrings.selectCourttextSize,
+                style: AppTextStyles.textStyle25white,
+              ),
+              Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  Icon(
+                    Icons.notifications,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  Positioned(
+                    bottom: 15,
+                    right: 2,
+                    child: Container(
+                      height: 11,
+                      width: 11,
+                      decoration:
+                      BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+          Text(
+            AppStrings.listofCourttextsize,
+            style: TextStyle(color:Colors.white70,fontSize: 18),
+          ),
+        ],
       ),
     );
   }

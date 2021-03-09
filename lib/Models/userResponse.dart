@@ -1,28 +1,4 @@
-class LoginResponse {
-  User user;
-  int status;
-  String token;
-
-  LoginResponse({this.user, this.status, this.token});
-
-  LoginResponse.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    status = json['status'];
-    token = json['token'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.user != null) {
-      data['user'] = this.user.toJson();
-    }
-    data['status'] = this.status;
-    data['token'] = this.token;
-    return data;
-  }
-}
-
-class User {
+class UserResponse {
   int id;
   String email;
   String emailVerifiedAt;
@@ -30,9 +6,9 @@ class User {
   String updatedAt;
   String firstname;
   String lastname;
-  String status;
+  int status;
 
-  User(
+  UserResponse(
       {this.id,
         this.email,
         this.emailVerifiedAt,
@@ -42,7 +18,7 @@ class User {
         this.lastname,
         this.status});
 
-  User.fromJson(Map<String, dynamic> json) {
+  UserResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
     emailVerifiedAt = json['email_verified_at'];

@@ -2,13 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:via_court/Constants/AppColors.dart';
-import 'package:via_court/Constants/AppConstants.dart';
-import 'package:via_court/Constants/AppStrings.dart';
-import 'package:via_court/Views/BottomNavigationBarHome.dart';
-import 'package:via_court/Views/HomeScreen.dart';
-import 'package:via_court/Widgets/custom_background_common_View.dart';
-import 'package:via_court/Widgets/custom_button.dart';
+import '../Constants/AppColors.dart';
+import '../Constants/AppConstants.dart';
+import '../Constants/AppStrings.dart';
+import '../Views/BottomNavigationBarHome.dart';
+import '../Views/HomeScreen.dart';
+import '../Widgets/custom_background_common_View.dart';
+import '../Widgets/custom_button.dart';
 
 class ConfirmationScreen extends StatelessWidget {
   String price;
