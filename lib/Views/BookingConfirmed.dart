@@ -422,7 +422,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
         onPressed: () {
           // availablityCheckApi();
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProductScreen(bookingId:widget.booking.id,userId: int.parse(widget.booking.usersId) ,pitchId:int.parse(widget.booking.pitchId) ,),),);
+              MaterialPageRoute(builder: (context) => ProductScreen(courtId: int.parse(widget.booking.courtsId),bookingId:widget.booking.id,userId: int.parse(widget.booking.usersId) ,pitchId:int.parse(widget.booking.pitchId) ,),),);
         },
         text: AppStrings.confirmText);
   }

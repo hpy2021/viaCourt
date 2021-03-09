@@ -52,7 +52,7 @@ class _CartState extends State<Cart> {
           isLoading = true;
         });
       Map<String, dynamic> request = new HashMap();
-      request["users_id"] = "1";
+      request["users_id"] = "${widget.userId}";
       request["pitch_id"] = "${widget.pitchId}";
       CartResponse response = new CartResponse.fromJson(
         await ApiManager()
@@ -301,14 +301,14 @@ class _CartState extends State<Cart> {
                         height: 31,
                         width: 44,
                         fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) =>
-                            Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: SpinKitCircle(
-                            color: AppColors.appColor_color,
-                            size: 20,
-                          ),
-                        ),
+                        // loadingBuilder: (context, child, loadingProgress) =>
+                        //     Padding(
+                        //   padding: const EdgeInsets.all(20.0),
+                        //   child: SpinKitCircle(
+                        //     color: AppColors.appColor_color,
+                        //     size: 20,
+                        //   ),
+                        // ),
                         errorBuilder: (context, url, error) =>
                             Icon(Icons.error),
                       ),
@@ -374,14 +374,14 @@ class _CartState extends State<Cart> {
             "${AppStrings.IMGBASE_URL + item.image}",
             height: 31,
             width: 44,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) => Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SpinKitCircle(
-                color: AppColors.appColor_color,
-                size: 20,
-              ),
-            ),
+            fit: BoxFit.contain,
+            // loadingBuilder: (context, child, loadingProgress) => Padding(
+            //   padding: const EdgeInsets.all(20.0),
+            //   child: SpinKitCircle(
+            //     color: AppColors.appColor_color,
+            //     size: 20,
+            //   ),
+            // ),
             errorBuilder: (context, url, error) => Icon(Icons.error),
           ),
           SizedBox(

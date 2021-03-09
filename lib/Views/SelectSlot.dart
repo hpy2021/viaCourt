@@ -14,6 +14,7 @@ import 'package:via_court/Models/CommonResponse.dart';
 import 'package:via_court/Models/SignUpResposne.dart';
 import 'package:via_court/Models/SlotItemModel.dart';
 import 'package:via_court/Models/TimeSlotResponse.dart';
+import 'package:via_court/Models/userResponse.dart';
 import 'package:via_court/Views/BookingConfirmed.dart';
 import 'package:via_court/Widgets/custom_button.dart';
 import 'package:via_court/Utils/ApiManager.dart';
@@ -40,6 +41,7 @@ class _SelectSlotState extends State<SelectSlot> {
   bool isLoading = false;
   String result;
   String dateTime, endTime;
+  UserResponse user;
 
   List<Timeslots> slotItemList = [];
 
@@ -49,21 +51,26 @@ class _SelectSlotState extends State<SelectSlot> {
         setState(() {
           isLoading = true;
         });
-      SignUpResponse registerResponse = SignUpResponse.fromJson(
+      user = UserResponse.fromJson(
           await ApiManager().getCallwithheader(AppStrings.USER_URL));
 
-      if (registerResponse.status == 201) {
+      if (user.status == "Active") {
         if (mounted)
           setState(() {
             isLoading = false;
           });
-        AppConstants().showToast(msg: "User Created SuccessFully");
+        print(user.firstname);
+        user = user;
+        setState(() {
+
+        });
+        AppConstants().showToast(msg: "User returned SuccessFully");
       } else {
         if (mounted)
           setState(() {
             isLoading = false;
           });
-        AppConstants().showToast(msg: "${registerResponse.message}");
+        // AppConstants().showToast(msg: "${user.message}");
       }
     }
   }
@@ -94,6 +101,7 @@ class _SelectSlotState extends State<SelectSlot> {
       //     .postCallWithHeader(AppStrings.PRODUCT_URL, request, context));
       if (response != null) {
         if (response.timeslots == null) {
+
           slotItemList.clear();
           slotItemList == null;
           setState(() {});
@@ -121,8 +129,8 @@ class _SelectSlotState extends State<SelectSlot> {
     print("pitch id: ${widget.pitchid}");
     print("location id: ${widget.locationid}");
     print("courtid: ${widget.courtid}");
-    getSlots(id: widget.pitchid, booking_date: _currentDate2);
-    // userApiCall();
+    // getSlots(id: widget.pitchid, booking_date: _currentDate2);
+    userApiCall();
   }
 
   availablityCheckApi(String startTime, String endTime) async {
@@ -547,11 +555,12 @@ class _SelectSlotState extends State<SelectSlot> {
           isLoading = true;
         });
       Map<String, dynamic> request = new HashMap();
+      print("uuuuuuuuuusssssssssseeeerrrr"+user.id.toString());
 
       request["courts_id"] = "${widget.courtid}";
       request["locations_id"] = "${widget.locationid}";
       request["pitch_id"] = "${widget.pitchid}";
-      request["users_id"] = "1";
+      request["users_id"] = "${user.id}";
       request["booking_date"] = "$_currentDate2";
       request["booking_slot"] = "$startTime to $endTime";
       request["booking_slot_start_time"] = "$startTime";

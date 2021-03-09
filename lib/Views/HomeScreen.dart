@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
   int pitchId;
   DateTime selectedDate;
 
-  HomeScreen({@required this.pitchId,@required this.selectedDate});
+  HomeScreen({@required this.pitchId, @required this.selectedDate});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -126,8 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
-
-            onTap: ()=>Navigator.pop(context),
+            onTap: () => Navigator.pop(context),
             child: Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
@@ -203,60 +202,70 @@ class _HomeScreenState extends State<HomeScreen> {
             color: AppColors.itemListBackGroundColor),
         child: InkWell(
           onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SelectTimeSlot(
-                    pitchId: widget.pitchId,
-                        selectedDate: widget.selectedDate,
-                        price: data.price,
-                        courtId:data.courtId ,
-                        // pitchId: data.id,
-                        // locationId: data.locationsId,
-                      ),),),
+            context,
+            MaterialPageRoute(
+              builder: (context) => SelectTimeSlot(
+                pitchId: widget.pitchId,
+                selectedDate: widget.selectedDate,
+                price: data.price,
+                courtId: data.courtId,
+                // pitchId: data.id,
+                // locationId: data.locationsId,
+              ),
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                    child:   Image.network("${AppStrings.IMGBASE_URL + data.courtImage}",
-                      height: 192 ,
-                      width: 379,
-                      fit: BoxFit.cover,loadingBuilder: (context, child, loadingProgress) =>  Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: SpinKitCircle(
-                          color: AppColors.appColor_color,
-                          size: 20,
-                        ),
-                      ),
-                      errorBuilder: (context, url, error) => Icon(Icons.error),
-                    ),
-                    // child:AppConstants.imageLoader(data.courtImage, "")
-                    // CachedNetworkImage(
-                    //   imageUrl: "http://via.placeholder.com/200x150",
-                    //   imageBuilder: (context, imageProvider) => Container(
-                    //     decoration: BoxDecoration(
-                    //       image: DecorationImage(
-                    //           image: imageProvider,
-                    //           fit: BoxFit.cover,
-                    //           colorFilter:
-                    //           ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
-                    //     ),
-                    //   ),
-                    //   placeholder: (context, url) => CircularProgressIndicator(),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                  child: FadeInImage(
+                    height: 192,
+                    width: 379,
+                    fit: BoxFit.cover,
+                    placeholder:AssetImage("assets/images/pitchImage.png") ,
 
-                    //   errorWidget: (context, url, error) => Icon(Icons.error),
-                    // ),
-                    // child: Image.network(
-                    //   "${AppStrings.IMGBASE_URL + data.courtImage}",
-                    //   height: 192,
-                    //   width: 379,
-                    //   fit: BoxFit.cover,
-                    // ),
+                    image: NetworkImage(
+                      "${AppStrings.IMGBASE_URL + data.courtImage}",
+
+                      // loadingBuilder: (context, child, loadingProgress) =>
+                      //     Padding(
+                      //   padding: const EdgeInsets.all(20.0),
+                      //   child: SpinKitCircle(
+                      //     color: AppColors.appColor_color,
+                      //     size: 20,
+                      //   ),
+                      // ),
+                      // errorBuilder: (context, url, error) => Icon(Icons.error),
                     ),
+                  ),
+                  // child:AppConstants.imageLoader(data.courtImage, "")
+                  // CachedNetworkImage(
+                  //   imageUrl: "http://via.placeholder.com/200x150",
+                  //   imageBuilder: (context, imageProvider) => Container(
+                  //     decoration: BoxDecoration(
+                  //       image: DecorationImage(
+                  //           image: imageProvider,
+                  //           fit: BoxFit.cover,
+                  //           colorFilter:
+                  //           ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+                  //     ),
+                  //   ),
+                  //   placeholder: (context, url) => CircularProgressIndicator(),
+
+                  //   errorWidget: (context, url, error) => Icon(Icons.error),
+                  // ),
+                  // child: Image.network(
+                  //   "${AppStrings.IMGBASE_URL + data.courtImage}",
+                  //   height: 192,
+                  //   width: 379,
+                  //   fit: BoxFit.cover,
+                  // ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, top: 16),

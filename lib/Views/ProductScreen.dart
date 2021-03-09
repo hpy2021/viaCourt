@@ -15,11 +15,12 @@ import 'package:via_court/Models/ProductResponse.dart';
 
 
 class ProductScreen extends StatefulWidget {
-  int bookingId, userId, pitchId;
+  int bookingId, userId, pitchId,courtId;
 
   ProductScreen(
       {@required this.bookingId,
       @required this.userId,
+        @required this.courtId,
       @required this.pitchId});
 
   @override
@@ -55,7 +56,7 @@ class _ProductScreenState extends State<ProductScreen> {
       // api call
       ProductResponse response = new ProductResponse.fromJson(
         await ApiManager()
-            .postCallWithHeader(AppStrings.PRODUCT_URL + "/5", request, context),
+            .postCallWithHeader(AppStrings.PRODUCT_URL + "/${widget.courtId}", request, context),
       );
       if (response != null) {
         if (response.status == 200) {

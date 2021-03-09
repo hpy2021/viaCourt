@@ -8,6 +8,7 @@ import 'package:via_court/Constants/AppConstants.dart';
 import 'package:via_court/Constants/AppStrings.dart';
 import 'package:via_court/Constants/AppTextStyles.dart';
 import 'package:via_court/Models/BookingResponse.dart';
+import 'package:via_court/Models/userResponse.dart';
 import 'package:via_court/Utils/ApiManager.dart';
 import 'package:via_court/Widgets/custom_background_common_View.dart';
 
@@ -23,13 +24,45 @@ class BookingHistory extends StatefulWidget {
 class _BookingHistoryState extends State<BookingHistory> {
   List<Bookings> bookingList = [];
   bool isLoading = false;
+  UserResponse user;
 
   @override
   void initState() {
     print(widget.isHistory);
     // TODO: implement initState
     super.initState();
-    _getBookings();
+    userApiCall();
+  }
+  userApiCall() async {
+    if (await ApiManager.checkInternet()) {
+      if (mounted)
+        setState(() {
+          isLoading = true;
+        });
+      user    = UserResponse.fromJson(
+          await ApiManager().getCallwithheader(AppStrings.USER_URL));
+
+      if (user.status == "Active") {
+
+
+        if (mounted)
+          setState(() {
+            isLoading = false;
+          });
+        _getBookings();
+        print(user.firstname);
+        user = user;
+        setState(() {
+
+        });
+      } else {
+        if (mounted)
+          setState(() {
+            isLoading = false;
+          });
+        // AppConstants().showToast(msg: "${user.message}");
+      }
+    }
   }
 
   _getBookings() async {
@@ -42,8 +75,8 @@ class _BookingHistoryState extends State<BookingHistory> {
     BookingResponse response = BookingResponse.fromJson(
       await ApiManager().postCallWithHeader(
           widget.isHistory
-              ? AppStrings.HISTORY_BOOKING_URL + "/1"
-              : AppStrings.BOOKING_URL + "/1",
+              ? AppStrings.HISTORY_BOOKING_URL + "/${user.id}"
+              : AppStrings.BOOKING_URL + "/${user.id}",
           request,
           context),
     );

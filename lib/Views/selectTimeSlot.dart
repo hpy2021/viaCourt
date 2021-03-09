@@ -12,16 +12,23 @@ import 'package:via_court/Models/BookingConfirmedResponse.dart';
 import 'package:via_court/Models/CommonResponse.dart';
 import 'package:via_court/Models/SlotItemModel.dart';
 import 'package:via_court/Models/TimeSlotResponse.dart';
+import 'package:via_court/Models/userResponse.dart';
 import 'package:via_court/Utils/ApiManager.dart';
 import 'package:via_court/Views/BookingConfirmed.dart';
 import 'package:via_court/Views/HomeScreen.dart';
 import 'package:via_court/Widgets/custom_button.dart';
 
 class SelectTimeSlot extends StatefulWidget {
-  int pitchId,price,courtId;
+  int pitchId, price, courtId;
   DateTime selectedDate;
+
   // int pitchId;
-  SelectTimeSlot({@required this.pitchId,@required this.selectedDate,this.price,this.courtId});
+  SelectTimeSlot(
+      {@required this.pitchId,
+      @required this.selectedDate,
+      this.price,
+      this.courtId});
+
   @override
   _SelectTimeSlotState createState() => _SelectTimeSlotState();
 }
@@ -35,6 +42,7 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
   bool isLoading = false;
   String result;
   String dateTime, endTime;
+  UserResponse user;
 
   List<Timeslots> slotItemList = [];
 
@@ -42,15 +50,45 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    userApiCall();
     getSlots(id: widget.pitchId, booking_date: widget.selectedDate);
   }
+
+  userApiCall() async {
+    if (await ApiManager.checkInternet()) {
+      if (mounted)
+        setState(() {
+          isLoading = true;
+        });
+      user = UserResponse.fromJson(
+          await ApiManager().getCallwithheader(AppStrings.USER_URL));
+
+      if (user.status == "Active") {
+        if (mounted)
+          setState(() {
+            isLoading = false;
+          });
+        print(user.firstname);
+        user = user;
+        setState(() {});
+
+      } else {
+        if (mounted)
+          setState(() {
+            isLoading = false;
+          });
+        // AppConstants().showToast(msg: "${user.message}");
+      }
+    }
+  }
+
   getSlots({int id, DateTime booking_date}) async {
     if (await ApiManager.checkInternet()) {
       if (mounted)
         setState(() {
           isLoading = true;
         });
-      print(id);
+      print("askdlalksd ${id}");
       Map<String, dynamic> request = new HashMap();
 
       // request["name"] = "abc";
@@ -70,6 +108,7 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
       //     .postCallWithHeader(AppStrings.PRODUCT_URL, request, context));
       if (response != null) {
         if (response.timeslots == null) {
+
           slotItemList.clear();
           slotItemList == null;
           setState(() {});
@@ -89,6 +128,7 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
         });
     }
   }
+
   availablityCheckApi(String startTime, String endTime) async {
     if (await ApiManager.checkInternet()) {
       if (mounted)
@@ -100,11 +140,11 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
       request["booking_slot_end_time"] = "$endTime";
       CommonResponse response = new CommonResponse.fromJson(await ApiManager()
           .postCallWithHeader(
-          AppStrings.AVAILABILITY_URL +
-              "/${widget.pitchId}" +
-              "/availability",
-          request,
-          context));
+              AppStrings.AVAILABILITY_URL +
+                  "/${widget.pitchId}" +
+                  "/availability",
+              request,
+              context));
       if (response != null) {
         print(response.result);
         if (mounted)
@@ -182,68 +222,68 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
                 _slotsView(),
                 Expanded(child: SizedBox()),
                 _bottomBookingButton()
-
               ],
             )));
   }
 
   roundedCornerTextView() {
     return Container(
-        margin: EdgeInsets.fromLTRB(20, 28, 20, 14),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(blurRadius: 7, color: Color(0xff3FA786).withOpacity(0.27))
-          ],
+      margin: EdgeInsets.fromLTRB(20, 28, 20, 14),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(blurRadius: 7, color: Color(0xff3FA786).withOpacity(0.27))
+        ],
 
-          // border: Border.all(color: Color(0xff3FA786).withOpacity(0.27))
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "${date2.format(widget.selectedDate)}",
-              style: AppTextStyles.textStyle15medium,
-            ),
-            Icon(
-              Icons.calendar_today_outlined,
-              color: AppColors.appColor_color,
-            )
-          ],
-        ),);
-  }
-  bool isForOnetime = false;
-  _slotsView() {
-    return Padding(
-      padding: EdgeInsets.only(left: 10),
-      child:slotItemList.length == 0 || slotItemList.length == null
-
-          ? Center(
-          child: Text(
-            "No slots available",
-            style: AppTextStyles.textStyle14grey,
-          ))
-          :
-      Wrap(
-        children: List<Widget>.generate(slotItemList.length, (index) {
-          if(isForOnetime){
-            slotItemList.forEach((element) {
-              if(element.isBooked){
-                element.isBooked = false;
-              }
-              print(element.isBooked);
-              isForOnetime = false;
-
-            });
-          }
-
-          return _slotsListItemView(slotItemList[index]);
-        }).toList(),
+        // border: Border.all(color: Color(0xff3FA786).withOpacity(0.27))
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "${date2.format(widget.selectedDate)}",
+            style: AppTextStyles.textStyle15medium,
+          ),
+          Icon(
+            Icons.calendar_today_outlined,
+            color: AppColors.appColor_color,
+          )
+        ],
       ),
     );
   }
+
+  bool isForOnetime = false;
+
+  _slotsView() {
+    return Padding(
+      padding: EdgeInsets.only(left: 10),
+      child: slotItemList.length == 0 || slotItemList.length == null
+          ? Center(
+              child: Text(
+              "No slots available",
+              style: AppTextStyles.textStyle14grey,
+            ))
+          : Wrap(
+              children: List<Widget>.generate(slotItemList.length, (index) {
+                if (isForOnetime) {
+                  slotItemList.forEach((element) {
+                    if (element.isBooked) {
+                      element.isBooked = false;
+                    }
+                    print(element.isBooked);
+                    isForOnetime = false;
+                  });
+                }
+
+                return _slotsListItemView(slotItemList[index]);
+              }).toList(),
+            ),
+    );
+  }
+
   _slotsListItemView(Timeslots slotItem) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 10, 9),
@@ -264,7 +304,6 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
         // },
 
         onPressed: () async {
-
           if (slotItem.isBooked == true) {
             slotItem.isBooked = false;
             dateTime = "";
@@ -286,7 +325,7 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
             } else if (result == null) {
               AppConstants().showToast(
                   msg:
-                  "The slot you are selecting has passed so try to select another slot.");
+                      "The slot you are selecting has passed so try to select another slot.");
             } else if (result == "not available") {
               AppConstants().showToast(msg: "This slot is not available.");
             }
@@ -312,13 +351,14 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
                     ? Colors.white
                     : AppColors.availableTextColor
                 // color: AppColors.availableTextColor
-              // : AppColors.notavailableTextColor,
-            ),
+                // : AppColors.notavailableTextColor,
+                ),
           ),
         ),
       ),
     );
   }
+
   _bottomBookingButton() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 19),
@@ -339,6 +379,7 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
           text: AppStrings.bookText),
     );
   }
+
   _bookingConfirmapi(String startTime, String endTime) async {
     if (await ApiManager.checkInternet()) {
       if (mounted)
@@ -350,7 +391,7 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
       request["courts_id"] = "${widget.courtId}";
       // request["locations_id"] = "${widget.locationid}";
       request["pitch_id"] = "${widget.pitchId}";
-      request["users_id"] = "1";
+      request["users_id"] = "${user.id}";
       request["booking_date"] = "${widget.selectedDate}";
       request["booking_slot"] = "$startTime to $endTime";
       request["booking_slot_start_time"] = "$startTime";
@@ -374,22 +415,26 @@ class _SelectTimeSlotState extends State<SelectTimeSlot> {
       //     .postCallWithHeader(AppStrings.PRODUCT_URL, request, context));
 
       if (response != null) {
-        if (response.message == "booking successfully")  {
+        if (response.message == "booking successfully") {
           if (mounted)
             setState(() {
               isLoading = false;
             });
           String courtName;
-    response.court.forEach((element) {
-      setState(() {
-        courtName = element.title;
-      });
-    });
+          response.court.forEach((element) {
+            setState(() {
+              courtName = element.title;
+            });
+          });
 
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BookingConfirmed(booking: response.booking,courtName: courtName,),
+              builder: (context) => BookingConfirmed(
+                booking: response.booking,
+                courtName: courtName,
+
+              ),
             ),
           );
           AppConstants().showToast(msg: response.message);
