@@ -323,7 +323,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
       title:
           Text("${widget.courtName}", style: AppTextStyles.textStyle18medium),
       trailing:
-          Text("\$ ${widget.booking.price}", style: AppTextStyles.textStyle18mediumwithGreen),
+          Text("\$ ${widget.booking.price.round()}", style: AppTextStyles.textStyle18mediumwithGreen),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

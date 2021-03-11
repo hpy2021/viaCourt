@@ -41,7 +41,7 @@ class AppTextStyles {
   static const TextStyle textStyle14mediumblack =
       TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500);
   static const TextStyle textStyle25white =
-      TextStyle(fontSize: 25, color: Colors.white);
+      TextStyle(fontSize: 25, color: Colors.white,fontWeight: FontWeight.w400);
   static const TextStyle textStyle14grey = TextStyle(
     fontSize: 14,
     color: Color(0xff666666),

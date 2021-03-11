@@ -414,11 +414,11 @@ class _CartState extends State<Cart> {
           Container(
             child: InkWell(
               onTap: () {
-                if (qty.qty > 1) {
-                  qty.qty = --qty.qty;
-                  removefromCart(serviceId: qty.id);
-                  // getCart();
-                }
+                // if (qty.qty > 1) {
+                qty.qty = --qty.qty;
+                removefromCart(serviceId: qty.id);
+                // getCart();
+                // }
 
                 setState(() {});
               },
@@ -434,8 +434,11 @@ class _CartState extends State<Cart> {
           ),
           Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Color(0xffC2DCD4))),
+                color: Colors.white,
+                border: Border.all(
+                  color: Color(0xffC2DCD4),
+                ),
+              ),
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
               child: Text(
                 "${qty.qty}",
