@@ -1,11 +1,13 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:via_court/Constants/AppColors.dart';
 import 'package:via_court/Constants/AppConstants.dart';
 import 'package:via_court/Constants/AppStrings.dart';
 import 'package:via_court/Constants/AppTextStyles.dart';
+import 'package:via_court/Models/CommonResponse.dart';
 import 'package:via_court/Models/SignUpResposne.dart';
 import 'package:via_court/Models/userResponse.dart';
 import 'package:via_court/Models/userResponse.dart';
@@ -26,6 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String _homeScreenText = "Waiting for token...";
   String _messageText = "Waiting for message...";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -95,10 +98,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
           });
         print(registerResponse.firstname);
         user = registerResponse;
-        setState(() {
+        setState(() {});
+        // AppConstants().showToast(msg: "User returned SuccessFully");
+      } else {
+        if (mounted)
+          setState(() {
+            isLoading = false;
+          });
+        // AppConstants().showToast(msg: "${registerResponse.message}");
+      }
+    }
+  }
 
+  logoutApiCall() async {
+    if (await ApiManager.checkInternet()) {
+      if (mounted)
+        setState(() {
+          isLoading = true;
         });
-        AppConstants().showToast(msg: "User returned SuccessFully");
+      var request;
+      CommonResponse registerResponse = CommonResponse.fromJson(
+        await ApiManager().postCallWithHeader(AppStrings.LOGOUT_URL,request,context),
+      );
+
+      if (registerResponse.status == 204) {
+        if (mounted)
+          setState(() {
+            isLoading = false;
+          });
+        // print(registerResponse.firstname);
+        // user = registerResponse;
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false);
+        setState(() {});
+        AppConstants().showToast(msg: "User loggedout SuccessFully");
       } else {
         if (mounted)
           setState(() {
@@ -119,9 +151,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 46,
           ),
-          user == null ?
-          header("user", context):
-          header("${user.firstname + " " + user.lastname}", context),
+          user == null
+              ? header("user", context)
+              : header("${user.firstname + " " + user.lastname}", context),
           SizedBox(
             height: 13,
           ),
@@ -183,7 +215,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SizedBox(
           height: 37,
         ),
-        _textIconWidget(text: "My Profile", url: "assets/images/profile.png",onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> EditProfile(user: user,)))),
+        _textIconWidget(
+            text: "My Profile",
+            url: "assets/images/profile.png",
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditProfile(
+                          user: user,
+                        )))),
         SizedBox(
           height: 34,
         ),
@@ -217,9 +257,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             url: "assets/images/signout.png",
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.clear();
+              logoutApiCall();
 
-              prefs.clear();
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false);
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => LoginScreen()),
+              //     (route) => false);
             }),
       ],
     );

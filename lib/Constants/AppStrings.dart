@@ -16,6 +16,7 @@ static const String BOOKING_CONFIRM_URL = BASE_URL +"api/createBooking";
       static const String ADD_TO_CART = BASE_URL +"api/addToCart";
       static const String BOOKING_URL = BASE_URL +"api/getBookings";
       static const String HISTORY_BOOKING_URL = BASE_URL+"api/getBookingsHistory";
+      static const String LOGOUT_URL = BASE_URL+"logout";
 
 
 

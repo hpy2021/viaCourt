@@ -33,18 +33,17 @@ class _BookingHistoryState extends State<BookingHistory> {
     super.initState();
     userApiCall();
   }
+
   userApiCall() async {
     if (await ApiManager.checkInternet()) {
       if (mounted)
         setState(() {
           isLoading = true;
         });
-      user    = UserResponse.fromJson(
+      user = UserResponse.fromJson(
           await ApiManager().getCallwithheader(AppStrings.USER_URL));
 
       if (user.status == "Active") {
-
-
         if (mounted)
           setState(() {
             isLoading = false;
@@ -52,9 +51,7 @@ class _BookingHistoryState extends State<BookingHistory> {
         _getBookings();
         print(user.firstname);
         user = user;
-        setState(() {
-
-        });
+        setState(() {});
       } else {
         if (mounted)
           setState(() {
@@ -225,25 +222,26 @@ class _BookingHistoryState extends State<BookingHistory> {
     print("${AppStrings.IMGBASE_URL + url}");
     return Container(
       child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          child: Image.network(
-            "${AppStrings.IMGBASE_URL + url}",
-            height: 40,
-            width: 40,
-            fit: BoxFit.cover,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        child: Image.network(
+          "${AppStrings.IMGBASE_URL + url}",
+          height: 40,
+          width: 40,
+          fit: BoxFit.cover,
 
-            // loadingBuilder: (context, child, loadingProgress) {
-            //   print(child);
-            //   return Padding(
-            //     padding: const EdgeInsets.all(20.0),
-            //     child: SpinKitCircle(
-            //       color: AppColors.appColor_color,
-            //       size: 50,
-            //     ),
-            //   );
-            // },
-            errorBuilder: (context, url, error) => Icon(Icons.error),
-          )),
+          // loadingBuilder: (context, child, loadingProgress) {
+          //   print(child);
+          //   return Padding(
+          //     padding: const EdgeInsets.all(20.0),
+          //     child: SpinKitCircle(
+          //       color: AppColors.appColor_color,
+          //       size: 50,
+          //     ),
+          //   );
+          // },
+          errorBuilder: (context, url, error) => Icon(Icons.error),
+        ),
+      ),
     );
   }
 }

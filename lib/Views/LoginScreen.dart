@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:via_court/Constants/AppColors.dart';
 import 'package:via_court/Constants/AppConstants.dart';
@@ -72,16 +73,18 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            body: _body(),
+          child:  AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              body: _body(),
+            ),
           ),
         ),
         AppConstants.progress(isLoading, context)
