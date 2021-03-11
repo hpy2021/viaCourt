@@ -98,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
 
         });
-        AppConstants().showToast(msg: "User returned SuccessFully");
+        // AppConstants().showToast(msg: "User returned SuccessFully");
       } else {
         if (mounted)
           setState(() {

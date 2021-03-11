@@ -52,7 +52,8 @@ class _BookingHistoryState extends State<BookingHistory> {
         _getBookings();
         print(user.firstname);
         user = user;
-        setState(() {
+        if (mounted)
+          setState(() {
 
         });
       } else {

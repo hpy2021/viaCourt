@@ -115,7 +115,7 @@ class _SelectCourtSizeState extends State<SelectCourtSize> {
             height: 3,
           ),
           SizedBox(
-            height: kIsWeb? 0:13,
+            height: 13
           ),
           Expanded(child: _courtListView())
         ],
@@ -162,16 +162,17 @@ class _SelectCourtSizeState extends State<SelectCourtSize> {
             topRight: Radius.circular(40),
           ),
           child: ListView.builder(
+            padding: EdgeInsets.all(17),
               itemCount: pitchList.length,
               itemBuilder: (BuildContext context, int index) {
                 return _courtListItemView(pitchList[index]);
-              }),
-        ));
+              },),
+        ),);
   }
 
   _courtListItemView(PitchData courtList) {
     return Container(
-      margin: EdgeInsets.fromLTRB(17, 0, 17, 15),
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
@@ -187,7 +188,7 @@ class _SelectCourtSizeState extends State<SelectCourtSize> {
                   //     locationid: widget.locationId,
                       pitchId: courtList.id,
                   // price: courtList.price,
-                    ))),
+                    ),),),
         child: Column(
           children: [
             // Row(
